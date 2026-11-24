@@ -1,0 +1,379 @@
+/* ==========================================================================
+   comumtabela-novo.css  —  substituto completo do comumtabela.css (mobile-first)
+
+   Mantido do original: .modelog, #listaNav, .produto-row (+ .highlight usado
+   pelo tabelas.js), a[href], main a.conector, slideDown, escala tipográfica,
+   fundo em degradê e as classes de imagem (.hard_oled_prime, .tela_kbs,
+   .com_chave, .tela_soft_oled, .tabela-cheia). As imagens continuam sendo
+   buscadas na MESMA pasta deste arquivo.
+
+   Corrigido (causas do preço cortado / espaço à esquerda):
+   - td:first-child tinha min-width:200px + padding largo + table overflow:hidden
+   - body{font-size:14px} não reduzia nada (rem é relativo ao <html>)
+   - main{align-items:center} deixava a <div> do 1º bloco "encolhida"
+   - hover/highlight com transform:scale() empurravam a linha para fora da tabela
+   ========================================================================== */
+
+:root {
+  --mc-surface: #ffffff;
+  --mc-text: #1b2559;
+  --mc-line: rgb(27 37 89 / 0.12);
+  --mc-brand-1: #4f63d2;   /* azul/indigo: ação e cabeçalhos */
+  --mc-brand-2: #6b3f9e;
+  --mc-primary-strong: #3f51b8;
+  --mc-zebra: rgb(79 99 210 / 0.05);
+  --mc-hover: rgb(79 99 210 / 0.12);
+  --mc-name: #303c71;
+  --mc-price: #0d582d;     /* verde: valor/positivo */
+}
+
+.modelog {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#listaNav {
+  list-style-type: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #2ee599 0%, #9e5ae2 100%);
+  min-height: 100vh;
+  padding: clamp(0.75rem, 3.5vw, 2.618rem);
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+:focus-visible {
+  outline: 3px solid var(--mc-primary-strong);
+  outline-offset: 2px;
+}
+
+/* ============================================
+   ESCALA TIPOGRÁFICA ÁUREA (REM)
+   ============================================ */
+p { font-size: 1rem; line-height: 1.618; }
+h6 { font-size: 1.05rem; line-height: 1.2; }
+h5 { font-size: 1.1rem; line-height: 1.2; }
+h4 { font-size: 1.15rem; line-height: 1.2; }
+h3 { font-size: 1.25rem; line-height: 1.2; }
+h2 { font-size: 1.35rem; line-height: 1.2; }
+
+/* ============================================
+   HEADER  (padding-top deixa espaço para a lupa fixa da busca)
+   ============================================ */
+header {
+  text-align: center;
+  padding-top: 3rem;
+  margin-bottom: 1.618rem;
+  animation: slideDown 0.6s ease-out;
+}
+
+header h1 {
+  color: rgb(109, 57, 57);
+  font-size: clamp(1.9rem, 7vw, 4.23rem);
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+  letter-spacing: 1px;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+/* ============================================
+   CONTAINER PRINCIPAL
+   ============================================ */
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* a <div> que envolve o 1º bloco também ocupa a largura toda */
+main > div,
+section {
+  width: 100%;
+  max-width: 900px;
+}
+
+section {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 500px;
+  padding-bottom: 1.25rem;   /* folga para a sombra da tabela não ser cortada */
+  margin-bottom: 0.5rem;
+}
+
+section:last-child {
+  margin-bottom: 0;
+}
+
+section h2 {
+  margin: 0 0.25rem 0.6rem;
+}
+
+/* ============================================
+   TABELA
+   ============================================ */
+table {
+  width: 100%;
+  max-width: 100%;
+  border-collapse: collapse;
+  background: var(--mc-surface);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 16px -8px rgba(0, 0, 0, 0.35);
+  text-align: center;
+}
+
+thead {
+  background: linear-gradient(135deg, var(--mc-brand-1) 0%, var(--mc-brand-2) 100%);
+  color: #fff;
+}
+
+thead th {
+  padding: 1rem;
+  text-align: center;
+  font-weight: 900;
+  font-size: 1.1rem;
+}
+
+/* cabeçalho com 2 colunas (Modelo | Preço): alinha com o conteúdo */
+thead th:not([colspan]):first-child { text-align: left; }
+thead th:not([colspan]):last-child {
+  width: 1%;
+  white-space: nowrap;
+  text-align: right;
+}
+
+/* ============================================
+   LINHAS  (clicáveis: o tabelas.js lê em voz alta)
+   Fundos semitransparentes: as imagens das classes
+   .hard_oled_prime etc. continuam aparecendo.
+   ============================================ */
+.produto-row {
+  display: table-row;
+  border-bottom: 1px solid var(--mc-line);
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color 0.3s ease;
+}
+
+.produto-row:last-child {
+  border-bottom: none;
+}
+
+.produto-row td {
+  padding: 0.85rem 1rem;
+  font-size: 0.95rem;
+  font-weight: 900;
+  color: #333;
+}
+
+.produto-row td:not(:last-child) {
+  overflow-wrap: anywhere;   /* nome longo quebra linha, nunca estoura */
+}
+
+.produto-row td:first-child {
+  color: var(--mc-name);
+  font-weight: 700;
+  text-align: left;
+  transition: color 0.3s ease;
+}
+
+/* Preço: sempre inteiro, à direita */
+.produto-row td:last-child {
+  width: 1%;
+  white-space: nowrap;
+  text-align: right;
+  color: var(--mc-price);
+  font-weight: 900;
+  font-variant-numeric: tabular-nums;
+}
+
+.produto-row:nth-child(even) td {
+  background: var(--mc-zebra);
+}
+
+@media (hover: hover) {
+  .produto-row:hover td {
+    background: var(--mc-hover);
+  }
+}
+
+/* ============================================
+   EFEITO HIGHLIGHT (classe aplicada pelo tabelas.js durante a leitura)
+   ============================================ */
+.produto-row.highlight td {
+  background: rgb(102 126 234 / 0.2);
+}
+
+.produto-row.highlight td:first-child {
+  color: var(--mc-primary-strong);
+  box-shadow: inset 5px 0 0 var(--mc-brand-1);
+}
+
+/* links internos (#linhag...) caem na linha com folga */
+tr[id] { scroll-margin-top: 1rem; }
+
+/* ============================================
+   LINKS / BOTÕES
+   ============================================ */
+a[href] {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  background: linear-gradient(135deg, var(--mc-brand-1) 0%, var(--mc-brand-2) 100%);
+  color: white;
+  text-decoration: none;
+  border-radius: 25px;
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 1.4;
+  cursor: pointer;
+  margin-top: 1rem;
+  box-shadow: 0 5px 15px rgba(79, 99, 210, 0.4);
+  touch-action: manipulation;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#listaNav a,
+#navfooter a {
+  margin-top: 0;
+}
+
+#navfooter ul {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+footer {
+  margin-top: 1.618rem;
+}
+
+a[href]:active {
+  transform: translateY(0);
+}
+
+@media (hover: hover) {
+  a[href]:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(79, 99, 210, 0.6);
+  }
+}
+
+/* ============================================
+   LINKS CONECTOR (DESTAQUE)
+   ============================================ */
+main a.conector {
+  display: inline-block;
+  max-width: 100%;
+  padding: 0.9rem 1.75rem;
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+  color: white;
+  text-decoration: none;
+  border-radius: 30px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  margin: 0.618rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border: 2px solid transparent;
+  box-shadow: 0 8px 25px rgba(255, 107, 107, 0.5);
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.4s ease,
+    background 0.4s ease,
+    border-color 0.4s ease;
+}
+
+@media (hover: hover) {
+  main a.conector:hover {
+    transform: translateY(-5px) scale(1.08);
+    box-shadow:
+      0 15px 40px rgba(255, 107, 107, 0.7),
+      0 0 30px rgba(255, 107, 107, 0.4);
+    background: linear-gradient(135deg, #ff5252 0%, #e63946 100%);
+    border-color: white;
+  }
+}
+
+/* ============================================
+   ANIMAÇÕES
+   ============================================ */
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================
+   TABLET / DESKTOP (>= 48em)
+   ============================================ */
+@media (min-width: 48em) {
+  header { margin-bottom: 2.618rem; }
+  header h1 { letter-spacing: 2px; }
+
+  main { gap: 1.618rem; }
+  section { margin-bottom: 1rem; }
+
+  thead th { padding: 1.5rem 1.618rem; }
+
+  .produto-row td {
+    padding: 1rem 1.618rem;
+    font-size: 1rem;
+  }
+
+  main a.conector {
+    padding: 1rem 2.618rem;
+    font-size: 1.1rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  header { animation: none; }
+  * { transition: none !important; }
+}
+
+/* ============================================
+   CLASSES DE TABELA COM IMAGEM DE BACKGROUND (iguais ao original)
+   ============================================ */
+.hard_oled_prime {
+  background-image: linear-gradient(rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7)), url('hard_oled_prime.jpeg');
+  background-size: cover;
+  background-position: center;
+}
+
+.tela_kbs {
+  background-image: linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.8)), url('tela_kbs.jpeg');
+  background-size: cover;
+  background-position: center;
+}
+
+.com_chave {
+  background-image: linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.8)), url('com_chave.jpeg');
+  background-size: cover;
+  background-position: center;
+}
+
+.tela_soft_oled {
+  background-image: linear-gradient(rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7)), url('tela_soft_oled.jpeg');
+  background-size: cover;
+  background-position: center;
+}
+
+.tabela-cheia {
+  background-image: linear-gradient(rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7)), url('bat_gen.jpeg');
+  background-size: cover;
+  background-position: center;
+}
